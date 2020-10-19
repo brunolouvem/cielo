@@ -111,6 +111,7 @@ defmodule Cielo.HTTP do
           {:error, :not_found}
       """
     end
+
     @impl Cielo.HTTPBehaviour
     def unquote(method)(path) do
       request(unquote(method), path, %{}, [])
@@ -129,6 +130,7 @@ defmodule Cielo.HTTP do
             }}
       """
     end
+
     @impl Cielo.HTTPBehaviour
     def unquote(method)(path, payload) when is_map(payload) do
       request(unquote(method), path, payload, [])
@@ -147,6 +149,7 @@ defmodule Cielo.HTTP do
             }}
       """
     end
+
     @impl Cielo.HTTPBehaviour
     def unquote(method)(path, opts) when is_list(opts) do
       request(unquote(method), path, %{}, opts)
@@ -168,6 +171,7 @@ defmodule Cielo.HTTP do
       - `sandbox`: Redirect calls to sandbox API
       """
     end
+
     @impl Cielo.HTTPBehaviour
     def unquote(method)(path, payload, opts) do
       request(unquote(method), path, payload, opts)
