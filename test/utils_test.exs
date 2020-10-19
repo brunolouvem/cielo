@@ -43,7 +43,18 @@ defmodule Cielo.UtilsTest do
         payment: %{}
       })
 
-    assert %{errors: [payment: %{errors: [type: "can't be blank", credit_card: "can't be blank", installments: "can't be blank", amount: "can't be blank"]}]} = Utils.changeset_errors(changeset)
+    assert %{
+             errors: [
+               payment: %{
+                 errors: [
+                   type: "can't be blank",
+                   credit_card: "can't be blank",
+                   installments: "can't be blank",
+                   amount: "can't be blank"
+                 ]
+               }
+             ]
+           } = Utils.changeset_errors(changeset)
   end
 
   test "map_from_cielo/1" do
