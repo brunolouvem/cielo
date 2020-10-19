@@ -2,6 +2,28 @@
 
 **A Cielo API Client for Elixir**
 
+Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
+
+## Readmap
+
+|Feature   | Status  |
+|---|:---:|
+|Bin Consultation  | ✅ |
+|Payment Consultation  | ✅ |
+|Credit Card Transaction   | ✅ | 
+|Debit Card Transaction   | ✅ | 
+|BankSlip Transaction   | ✅ | 
+|Recurrent Payment Transaction   | ✅ | 
+|Zero Auth Consultation   | ⏱ |
+|Card Tokenization   | ⏱ |
+|Token Consultation   | ⏱ |
+|Full Capture Transaction   | ⏱ |
+|Partial Capture Transaction   | ⏱ |
+|Cancel a Sale   | ⏱ |
+|Cancel a Sale   | ⏱ |
+|QRCode Transaction   | ⏱ |
+
+
 ## Installation
 
 Add cielo to your list of dependencies in `mix.exs`:
