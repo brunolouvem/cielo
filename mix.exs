@@ -1,7 +1,7 @@
 defmodule Cielo.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.1.1"
   def project do
     [
       app: :cielo,
@@ -54,8 +54,7 @@ defmodule Cielo.MixProject do
       maintainers: ["Bruno Louvem"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/brunolouvem/cielo"},
-      files:
-        ~w(.formatter.exs mix.exs README.md lib)
+      files: ~w(.formatter.exs mix.exs README.md lib)
     ]
   end
 

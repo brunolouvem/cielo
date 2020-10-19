@@ -14,7 +14,7 @@ Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
 |Debit Card Transaction   | ✅ | 
 |BankSlip Transaction   | ✅ | 
 |Recurrent Payment Transaction   | ✅ | 
-|Zero Auth Consultation   | ⏱ |
+|Zero Auth Consultation   | ✅ |
 |Card Tokenization   | ⏱ |
 |Token Consultation   | ⏱ |
 |Full Capture Transaction   | ⏱ |

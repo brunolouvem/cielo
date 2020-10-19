@@ -10,10 +10,17 @@ defmodule Cielo.Consultation do
   """
   use Cielo.Application
 
+  alias Cielo.{
+    Entities.ZeroAuthCardConsutation,
+    Entities.ZeroAuthCardTokenConsutation,
+    Transaction
+  }
+
   @bin_endpoint "1/cardBin/:card_digits"
   @payment_endpoint "/1/sales/:identifier"
   @merchant_endpoint "/1/sales?merchantOrderId=:identifier"
   @recurrent_payment_endpoint "/1/RecurrentPayment/:identifier"
+  @zero_auth_endpoint "/1/zeroauth"
 
   @doc """
   Wrap a consultation of a payment by `merchant_order_id`, if not found a payments with this merchant_order_id, an error tuple will be returned.
@@ -22,7 +29,7 @@ defmodule Cielo.Consultation do
 
   ## Examples
 
-      iex> Cielo.Consultation.merchant_order("2014111703")
+      iex(1)> Cielo.Consultation.merchant_order("2014111703")
       {:ok,
       %{
       payments: [
@@ -37,7 +44,7 @@ defmodule Cielo.Consultation do
       ]
       }
 
-      iex> Cielo.Consultation.merchant_order("0000000000")
+      iex(2)> Cielo.Consultation.merchant_order("0000000000")
       {:error, :not_found}
   """
   @spec merchant_order(binary()) :: {:error, any, list()} | {:error, any} | {:ok, map}
@@ -52,7 +59,7 @@ defmodule Cielo.Consultation do
 
   ## Example
 
-      iex> Cielo.Consultation.payment("37d2dcc6-6397-4d40-8066-2539397cfa8c")
+      iex(1)> Cielo.Consultation.payment("37d2dcc6-6397-4d40-8066-2539397cfa8c")
       {:ok,
         %{
           customer: %{address: %{}, name: "Comprador crédito simples"},
@@ -76,7 +83,7 @@ defmodule Cielo.Consultation do
   Consult one recurrent payment by paymentID.
 
   ## Example
-      iex> Cielo.Consultation.recurrent_payment("8814cc0e-3658-42bc-8820-52b7439e668a")
+      iex(1)> Cielo.Consultation.recurrent_payment("8814cc0e-3658-42bc-8820-52b7439e668a")
       {:ok,
         %{
           customer: %{address: %{}, name: "Comprador crédito simples"},
@@ -101,7 +108,7 @@ defmodule Cielo.Consultation do
 
   ## Example
 
-      iex> Cielo.Consultation.bin("538965")
+      iex(1)> Cielo.Consultation.bin("538965")
       {:ok,
         %{
           card_type: "Débito",
@@ -119,5 +126,38 @@ defmodule Cielo.Consultation do
     @bin_endpoint
     |> Cielo.HTTP.build_path(":card_digits", "#{bin_card}")
     |> adapter().get()
+  end
+
+  @doc """
+  Consult ZeroAuth for validate card and holder.
+
+  ## Example
+
+      iex(1)> attrs = %{
+        brand: "Visa",
+        card_number: "1234123412341231",
+        card_on_file: %{reason: "Recurring", usage: "First"},
+        expiration_date: "12/2021",
+        holder: "Alexsander Rosa",
+        save_card: "false",
+        security_code: "123"
+      }
+      iex(2)> Cielo.Consultation.zero_auth(attrs)
+      {:ok,
+        %{
+          valid: true,
+          return_code: "00",
+          return_message: "Transacao autorizada",
+          issuer_transaction_id: "580027442382078"
+        }
+      }
+  """
+  @spec zero_auth(map()) :: {:error, any, list()} | {:error, any} | {:ok, map}
+  def zero_auth(%{card_token: _} = params) do
+    Transaction.make_post_transaction(ZeroAuthCardTokenConsutation, params, @zero_auth_endpoint)
+  end
+
+  def zero_auth(params) do
+    Transaction.make_post_transaction(ZeroAuthCardConsutation, params, @zero_auth_endpoint)
   end
 end
