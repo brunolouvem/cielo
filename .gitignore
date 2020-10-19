@@ -23,3 +23,5 @@ erl_crash.dump
 cielo-*.tar
 
 config/config.secret.exs
+
+.env
