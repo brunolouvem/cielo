@@ -112,7 +112,7 @@ defmodule Cielo.Transaction do
   """
   @spec credit(map) :: {:ok, map()} | {:error, map(), list()} | {:error, any}
   def credit(params) do
-    make_transaction(CreditTransactionRequest, params)
+    make_post_transaction(CreditTransactionRequest, params)
   end
 
   @doc """
@@ -209,7 +209,7 @@ defmodule Cielo.Transaction do
   """
   @spec debit(map) :: {:ok, map()} | {:error, map(), list()} | {:error, any}
   def debit(params) do
-    make_transaction(DebitTransactionRequest, params)
+    make_post_transaction(DebitTransactionRequest, params)
   end
 
   @doc """
@@ -299,23 +299,22 @@ defmodule Cielo.Transaction do
   """
   @spec bankslip(map) :: {:ok, map()} | {:error, map(), list()} | {:error, any}
   def bankslip(params) do
-    make_transaction(BankSlipTransactionRequest, params)
+    make_post_transaction(BankSlipTransactionRequest, params)
   end
-
-
 
   @spec recurrent(map) :: {:ok, map()} | {:error, map(), list()} | {:error, any}
   def recurrent(params) do
-    make_transaction(RecurrentTransactionRequest, params)
+    make_post_transaction(RecurrentTransactionRequest, params)
   end
 
-  defp make_transaction(module, params) do
+  @doc false
+  def make_post_transaction(module, params, endpoint \\ @endpoint) do
     module
     |> struct()
     |> module.changeset(params)
     |> case do
       %Ecto.Changeset{valid?: true} ->
-        HTTP.post(@endpoint, params)
+        HTTP.post(endpoint, params)
 
       error ->
         {:error, Utils.changeset_errors(error)}
