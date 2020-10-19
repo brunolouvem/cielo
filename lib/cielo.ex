@@ -1,6 +1,10 @@
 defmodule Cielo do
   @moduledoc """
-  Main module of client
+  Main module of client. This module wraps other specific modules and they main functions.
+
+  Be aware that all modules implements parameter's validation for all calls in Cielo API, and
+  these validations was written by Cielo employees, and the documentation can be found in
+  [Cielo Dev Portal](https://developercielo.github.io/manual/cielo-ecommerce).
   """
 
   defdelegate bin_consult(bin_card), to: Cielo.Consultation, as: :bin
