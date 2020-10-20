@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.2 (2020-10-20)
+
+### Enhancements
+* Capture Call
+
+### Fixes
+* Wrong string path concat
+* Wrong Accep-Encoding header sent to Cielo
+
 ## v0.1.1 (2020-10-19)
 
 ### Enhancements

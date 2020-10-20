@@ -124,6 +124,11 @@ defmodule Cielo.Utils do
 
   def map_to_cielo(value), do: value
 
+  def valid_guid?(guid) do
+    guid_regex = ~r/^[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$/
+    Regex.match?(guid_regex, guid)
+  end
+
   defp convert_map_key(key, :atom) when is_atom(key), do: key
 
   defp convert_map_key(key, :atom) when is_binary(key) do

@@ -208,6 +208,14 @@ defmodule Cielo.HTTP do
   end
 
   @doc false
+  def encode_url_args(path, params) when is_map(params) do
+    path <> "?" <> URI.encode_query(params)
+  end
+
+  @doc false
+  def encode_url_args(path, _), do: path
+
+  @doc false
   @spec code_to_reason(integer) :: atom
   defp code_to_reason(integer)
 

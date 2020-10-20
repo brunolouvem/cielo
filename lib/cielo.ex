@@ -26,4 +26,6 @@ defmodule Cielo do
   defdelegate debit_transaction(params), to: Cielo.Transaction, as: :debit
   defdelegate bankslip_transaction(params), to: Cielo.Transaction, as: :bankslip
   defdelegate recurrent_transaction(params), to: Cielo.Transaction, as: :recurrent
+  defdelegate capture(payment_id, params), to: Cielo.Transaction, as: :capture
+  defdelegate capture(payment_id), to: Cielo.Transaction, as: :capture
 end

@@ -15,10 +15,10 @@ Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
 |BankSlip Transaction   | ✅ | 
 |Recurrent Payment Transaction   | ✅ | 
 |Zero Auth Consultation   | ✅ |
+|Full Capture Transaction   | ✅ |
+|Partial Capture Transaction   | ✅ |
 |Card Tokenization   | ⏱ |
 |Token Consultation   | ⏱ |
-|Full Capture Transaction   | ⏱ |
-|Partial Capture Transaction   | ⏱ |
 |Cancel a Sale   | ⏱ |
 |Cancel a Sale   | ⏱ |
 |QRCode Transaction   | ⏱ |
