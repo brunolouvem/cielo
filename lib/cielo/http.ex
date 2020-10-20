@@ -18,12 +18,12 @@ defmodule Cielo.HTTP do
   @sandbox_prefix "sandbox"
 
   @scheme "https://"
-  @host "cieloecommerce.cielo.com.br"
+  @host "cieloecommerce.cielo.com.br/1"
 
   @headers [
     {"Accept", "application/json"},
     {"User-Agent", "Cielo Elixir/0.1"},
-    {"Accept-Encoding", "gzip"},
+    {"Accept-Encoding", "identity"},
     {"Content-Type", "application/json"}
   ]
 

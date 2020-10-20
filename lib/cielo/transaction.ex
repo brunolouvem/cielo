@@ -10,7 +10,7 @@ defmodule Cielo.Transaction do
 
   """
 
-  @endpoint "1/sales/"
+  @endpoint "sales/"
 
   alias Cielo.{Utils, HTTP}
 
