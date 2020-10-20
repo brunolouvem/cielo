@@ -16,11 +16,11 @@ defmodule Cielo.Consultation do
     Transaction
   }
 
-  @bin_endpoint "1/cardBin/:card_digits"
-  @payment_endpoint "/1/sales/:identifier"
-  @merchant_endpoint "/1/sales?merchantOrderId=:identifier"
-  @recurrent_payment_endpoint "/1/RecurrentPayment/:identifier"
-  @zero_auth_endpoint "/1/zeroauth"
+  @bin_endpoint "cardBin/:card_digits"
+  @payment_endpoint "sales/:identifier"
+  @merchant_endpoint "sales?merchantOrderId=:identifier"
+  @recurrent_payment_endpoint "RecurrentPayment/:identifier"
+  @zero_auth_endpoint "zeroauth"
 
   @doc """
   Wrap a consultation of a payment by `merchant_order_id`, if not found a payments with this merchant_order_id, an error tuple will be returned.

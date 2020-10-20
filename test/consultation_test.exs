@@ -20,7 +20,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "1/cardBin/451278" ->
+        "cardBin/451278" ->
           expectation_tuple
       end)
 
@@ -40,7 +40,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "1/cardBin/45127A" ->
+        "cardBin/45127A" ->
           expectation_tuple
       end)
 
@@ -67,7 +67,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "/1/sales?merchantOrderId=2014111703" ->
+        "sales?merchantOrderId=2014111703" ->
           expectation_tuple
       end)
 
@@ -79,7 +79,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "/1/sales?merchantOrderId=201411170A" ->
+        "sales?merchantOrderId=201411170A" ->
           expectation_tuple
       end)
 
@@ -102,7 +102,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "/1/sales/37d2dcc6-6397-4d40-8066-2539397cfa8c" ->
+        "sales/37d2dcc6-6397-4d40-8066-2539397cfa8c" ->
           expectation_tuple
       end)
 
@@ -126,7 +126,7 @@ defmodule Cielo.ConsultationTest do
 
       Cielo.HTTPMock
       |> expect(:get, fn
-        "/1/RecurrentPayment/37d2dcc6-6397-4d40-8066-2539397cfa8c" ->
+        "RecurrentPayment/37d2dcc6-6397-4d40-8066-2539397cfa8c" ->
           expectation_tuple
       end)
 
