@@ -11,6 +11,7 @@ defmodule Cielo.Transaction do
   """
 
   @endpoint "sales/"
+  @capture_endpoint "sales/:payment_id/capture"
 
   alias Cielo.{Utils, HTTP}
 
@@ -306,6 +307,106 @@ defmodule Cielo.Transaction do
   def recurrent(params) do
     make_post_transaction(RecurrentTransactionRequest, params)
   end
+
+  @doc """
+  Capture an uncaptured credit card transaction with partial capture
+
+  valid option `amount`
+  ## Successfull transaction
+
+      iex(1)> Cielo.Transaction.capture("26e5da86-d975-4e2f-aa25-862b5a43e9f4", %{amount: 5000})
+      {:ok,
+      %{
+        authorization_code: "214383",
+        links: [
+          %{
+            href: "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/...",
+            method: "GET",
+            rel: "self"
+          },
+          %{
+            href: "https://apisandbox.cieloecommerce.cielo.com.br/1/sales/.../void",
+            method: "PUT",
+            rel: "void"
+          }
+        ],
+        proof_of_sale: "793143",
+        provider_return_code: "6",
+        provider_return_message: "Operation Successful",
+        reason_code: 0,
+        reason_message: "Successful",
+        return_code: "6",
+        return_message: "Operation Successful",
+        status: 2,
+        tid: "1020082643193"
+      }}
+      iex(2)> Cielo.Transaction.capture("26e5da86-d975-4e2f-aa25-862b5a43e9f4")
+      {:error, :bad_request, [%{code: 308, message: "Transaction not available to capture"}]}
+  """
+  @spec capture(binary(), map()) :: {:error, any} | {:error, any, any} | {:ok, map}
+  def capture(payment_id, params) when is_binary(payment_id) and is_map(params) do
+    case Utils.valid_guid?(payment_id) do
+      :true ->
+        @capture_endpoint
+        |> HTTP.build_path(":payment_id", "#{payment_id}")
+        |> HTTP.encode_url_args(params)
+        |> HTTP.put()
+
+      :false ->
+        {:error, "Not valid GUID"}
+    end
+  end
+
+  def capture(_, _), do: {:error, "Not Valid arguments"}
+
+  @doc """
+  Capture an uncaptured credit card transaction
+
+  ## Successfull transaction
+
+      iex(1)> Cielo.Transaction.capture("26e5da86-d975-4e2f-aa25-862b5a43e9f4")
+      {:ok,
+      %{
+        authorization_code: "214383",
+        links: [
+          %{
+            href: "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/...",
+            method: "GET",
+            rel: "self"
+          },
+          %{
+            href: "https://apisandbox.cieloecommerce.cielo.com.br/1/sales/.../void",
+            method: "PUT",
+            rel: "void"
+          }
+        ],
+        proof_of_sale: "793143",
+        provider_return_code: "6",
+        provider_return_message: "Operation Successful",
+        reason_code: 0,
+        reason_message: "Successful",
+        return_code: "6",
+        return_message: "Operation Successful",
+        status: 2,
+        tid: "1020082643193"
+      }}
+      iex(2)> Cielo.Transaction.capture("26e5da86-d975-4e2f-aa25-862b5a43e9f4")
+      {:error, :bad_request, [%{code: 308, message: "Transaction not available to capture"}]}
+  """
+  @spec capture(binary()) :: {:error, any} | {:error, any, any} | {:ok, map}
+  def capture(payment_id) when is_binary(payment_id) do
+    case Utils.valid_guid?(payment_id) do
+      :true ->
+        @capture_endpoint
+        |> HTTP.build_path(":payment_id", "#{payment_id}")
+        |> HTTP.put()
+
+      :false ->
+        {:error, "Not valid GUID"}
+    end
+  end
+
+  def capture(_), do: {:error, "Not Binary Payment Id"}
 
   @doc false
   def make_post_transaction(module, params, endpoint \\ @endpoint) do
