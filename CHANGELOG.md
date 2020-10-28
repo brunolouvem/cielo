@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## v0.1.3 (2020-10-28)
+
+### Enhancements
+* Cancel Recurrency
+* Cancel Sale
+* Cancel Partial Sale
 
 ### Fixes
 * Remove accidental IO.inspect in Cielo.HTTP

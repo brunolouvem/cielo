@@ -12,6 +12,9 @@ defmodule Cielo.Transaction do
 
   @endpoint "sales/"
   @capture_endpoint "sales/:payment_id/capture"
+  @cancel_endpoint "sales/:payment_id/void"
+  @cancel_partial_endpoint "sales/:payment_id/void?amount=:amount"
+  @deactivate_recurrent_payment_endpoint "RecurrentPayment/:payment_id/Deactivate"
 
   alias Cielo.{Utils, HTTP}
 
@@ -402,11 +405,105 @@ defmodule Cielo.Transaction do
         |> HTTP.put()
 
       :false ->
-        {:error, "Not valid GUID"}
+        {:error, "Invalid GUID"}
     end
   end
 
   def capture(_), do: {:error, "Not Binary Payment Id"}
+
+  @doc """
+  Deactivate a recurrent payment transaction
+
+  ## Successfull transaction
+
+      iex(1)> Cielo.Transaction.deactivate_recurrent_payment("26e5da86-d975-4e2f-aa25-862b5a43e9f4")
+      {:ok, ""}
+  """
+  @spec deactivate_recurrent_payment(binary()) :: {:error, any} | {:error, any, any} | {:ok, any}
+  def deactivate_recurrent_payment(recurrent_payment_id) do
+    case Utils.valid_guid?(recurrent_payment_id) do
+      :true ->
+        @deactivate_recurrent_payment_endpoint
+        |> HTTP.build_path(":payment_id", "#{recurrent_payment_id}")
+        |> HTTP.put()
+
+      :false ->
+        {:error, "Invalid GUID"}
+    end
+  end
+
+  @doc """
+  Cancel a card payment
+
+  ## Successfull transaction
+
+      iex(1)> Cielo.Transaction.cancel_payment("26e5da86-d975-4e2f-aa25-862b5a43e9f4", 1000)
+      {:ok,
+      %{
+        authorization_code: "693066",
+        links: [
+          %{
+            href: "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/{PaymentId}",
+            method: "GET",
+            rel: "self"
+          }
+        ],
+        proof_of_sale: "4510712",
+        return_code: "0",
+        return_message: "Operation Successful",
+        status: 2,
+        tid: "0719094510712"
+      }}
+  """
+  @spec cancel_payment(binary(), non_neg_integer()) :: {:error, any} | {:ok, map}
+  def cancel_payment(payment_id, amount) do
+    case Utils.valid_guid?(payment_id) do
+      :true ->
+        @cancel_partial_endpoint
+        |> HTTP.build_path(":payment_id", "#{payment_id}")
+        |> HTTP.build_path(":amount", "#{amount}")
+        |> HTTP.put()
+
+      :false ->
+        {:error, "Invalid GUID"}
+    end
+  end
+
+  @doc """
+  Cancel a card payment
+
+  ## Successfull transaction
+
+      iex(1)> Cielo.Transaction.cancel_payment("26e5da86-d975-4e2f-aa25-862b5a43e9f4")
+      {:ok,
+      %{
+        authorization_code: "693066",
+        links: [
+          %{
+            href: "https://apiquerysandbox.cieloecommerce.cielo.com.br/1/sales/{PaymentId}",
+            method: "GET",
+            rel: "self"
+          }
+        ],
+        proof_of_sale: "4510712",
+        return_code: "9",
+        return_message: "Operation Successful",
+        status: 10,
+        tid: "0719094510712"
+      }}
+  """
+  @spec cancel_payment(binary()) :: {:error, any} | {:ok, map}
+  def cancel_payment(payment_id) do
+    case Utils.valid_guid?(payment_id) do
+      :true ->
+        @cancel_endpoint
+        |> HTTP.build_path(":payment_id", "#{payment_id}")
+        |> HTTP.put()
+
+      :false ->
+        {:error, "Invalid GUID"}
+    end
+  end
 
   @doc false
   def make_post_transaction(module, params, endpoint \\ @endpoint) do
