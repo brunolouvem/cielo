@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Fixes
+* Remove accidental IO.inspect in Cielo.HTTP
+
 ## v0.1.2 (2020-10-20)
 
 ### Enhancements
