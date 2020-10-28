@@ -54,7 +54,6 @@ defmodule Cielo.HTTP do
   defp decode_json_body(body) do
     body
     |> String.trim()
-    |> IO.inspect()
     |> Jason.decode!()
     |> Utils.map_from_cielo()
   rescue
