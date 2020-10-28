@@ -4,7 +4,7 @@
 
 Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
 
-## Readmap
+## Roadmap
 
 |Feature   | Status  |
 |---|:---:|
@@ -17,10 +17,11 @@ Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
 |Zero Auth Consultation   | ✅ |
 |Full Capture Transaction   | ✅ |
 |Partial Capture Transaction   | ✅ |
+|Cancel a Sale   | ✅ |
+|Partial Cancel Sale   | ✅ |
+|Cancel a Recurrent Sale   | ✅ |
 |Card Tokenization   | ⏱ |
 |Token Consultation   | ⏱ |
-|Cancel a Sale   | ⏱ |
-|Cancel a Sale   | ⏱ |
 |QRCode Transaction   | ⏱ |
 
 
