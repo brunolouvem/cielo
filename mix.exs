@@ -1,7 +1,7 @@
 defmodule Cielo.MixProject do
   use Mix.Project
 
-  @version "0.1.3"
+  @version "0.1.4"
   def project do
     [
       app: :cielo,
@@ -41,6 +41,7 @@ defmodule Cielo.MixProject do
       {:hackney, "~> 1.15"},
       {:jason, "~> 1.2"},
       {:ecto, "~> 3.2"},
+      {:telemetry, "~> 0.4"},
       {:excoveralls, "~> 0.13.0", only: [:dev, :test]},
       {:mox, "~> 1.0", only: :test},
       {:inch_ex, github: "rrrene/inch_ex", only: [:dev, :test]},
@@ -54,7 +55,7 @@ defmodule Cielo.MixProject do
       maintainers: ["Bruno Louvem"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/brunolouvem/cielo"},
-      files: ~w(.formatter.exs mix.exs README.md lib)
+      files: ~w(.formatter.exs mix.exs README.md CHANGELOG.md lib)
     ]
   end
 
@@ -64,7 +65,8 @@ defmodule Cielo.MixProject do
       source_ref: "v#{@version}",
       canonical: "http://hexdocs.pm/cielo",
       source_url: "https://github.com/brunolouvem/cielo",
-      extras: ["README.md"]
+      extras: ["README.md", "CHANGELOG.md"],
+      groups_for_extras: [Extras: ~r{^CHANGELOG.md}]
     ]
   end
 end

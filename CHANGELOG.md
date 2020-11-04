@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.1.4 (2020-11-04)
+
+### Enhancements
+* Telemetry events
+* New module Recurrency, centralizing recurrent payment functions
+* New functions
+    - `update_payment_data/2`
+    - `update_end_date/2`
+    - `update_next_charge_date/2`
+    - `update_interval/2`
+    - `update_charge_day/2`
+    - `update_amount/2`
+    - `reactivate_recurrent/1`
+
 ## v0.1.3 (2020-10-28)
 
 ### Enhancements

@@ -21,10 +21,18 @@ defmodule Cielo.HTTP do
   @host "cieloecommerce.cielo.com.br/1"
 
   @headers [
-    {"Accept", "application/json"},
     {"User-Agent", "Cielo Elixir/0.1"},
-    {"Accept-Encoding", "identity"},
+    {"Accept-Encoding", "identity"}
+  ]
+
+  @json_headers [
+    {"Accept", "application/json"},
     {"Content-Type", "application/json"}
+  ]
+
+  @text_headers [
+    {"Accept", "*/*"},
+    {"Content-Type", "text/json"}
   ]
 
   @statuses %{
@@ -62,6 +70,9 @@ defmodule Cielo.HTTP do
 
   @spec request(atom, binary, binary | map, Keyword.t()) :: response
   def request(method, path, body \\ %{}, opts \\ []) do
+    emit_start(method, path)
+    start_time = System.monotonic_time()
+
     body_params = Utils.map_to_cielo(body)
 
     try do
@@ -74,15 +85,32 @@ defmodule Cielo.HTTP do
       )
     catch
       kind, reason ->
+        duration = System.monotonic_time() - start_time
+
+        emit_exception(duration, method, path, %{
+          kind: kind,
+          reason: reason,
+          stacktrace: __STACKTRACE__
+        })
+
         :erlang.raise(kind, reason, __STACKTRACE__)
     else
       {:ok, code, _headers, body} when code in 200..201 ->
+        duration = System.monotonic_time() - start_time
+        emit_stop(duration, method, path, code)
+
         {:ok, decode_body(body)}
 
       {:ok, code, _headers, body} when code in 400..500 ->
+        duration = System.monotonic_time() - start_time
+        emit_stop(duration, method, path, code)
+
         error_response(code_to_reason(code), decode_body(body))
 
       {:error, reason} ->
+        duration = System.monotonic_time() - start_time
+        emit_error(duration, method, path, reason)
+
         {:error, reason}
     end
   end
@@ -135,6 +163,11 @@ defmodule Cielo.HTTP do
       request(unquote(method), path, payload, [])
     end
 
+    @impl Cielo.HTTPBehaviour
+    def unquote(method)(path, payload) when is_binary(payload) do
+      request(unquote(method), path, payload, [])
+    end
+
     if @method != "GET" do
       @doc """
       Wrapp a hackey call with #{@method} verb passing path and payload to function
@@ -182,11 +215,21 @@ defmodule Cielo.HTTP do
   defp build_headers(opts) do
     merchant_id = get_lazy_env(opts, :merchant_id)
     merchant_key = get_lazy_env(opts, :merchant_key)
+    request_format = get_lazy_env(opts, :request_format, :json)
+
+    request_header =
+      case request_format do
+        :text ->
+          @text_headers
+
+        :json ->
+          @json_headers
+      end
 
     [
       {"MerchantId", merchant_id},
       {"MerchantKey", merchant_key}
-    ] ++ @headers
+    ] ++ @headers ++ request_header
   end
 
   @doc false
@@ -244,4 +287,36 @@ defmodule Cielo.HTTP do
 
   defp is_sandbox?(false), do: :production
   defp is_sandbox?(true), do: :sandbox
+
+    defp emit_start(method, path) do
+    :telemetry.execute(
+      [:cielo, :request, :start],
+      %{system_time: System.system_time()},
+      %{method: method, path: path}
+    )
+  end
+
+  defp emit_exception(duration, method, path, error_data) do
+    :telemetry.execute(
+      [:cielo, :request, :exception],
+      %{duration: duration},
+      %{method: method, path: path, error: error_data}
+    )
+  end
+
+  defp emit_error(duration, method, path, error_reason) do
+    :telemetry.execute(
+      [:cielo, :request, :error],
+      %{duration: duration},
+      %{method: method, path: path, error: error_reason}
+    )
+  end
+
+  defp emit_stop(duration, method, path, code) do
+    :telemetry.execute(
+      [:cielo, :request, :stop],
+      %{duration: duration},
+      %{method: method, path: path, http_status: code}
+    )
+  end
 end

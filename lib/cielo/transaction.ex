@@ -306,6 +306,11 @@ defmodule Cielo.Transaction do
     make_post_transaction(BankSlipTransactionRequest, params)
   end
 
+  @doc """
+   **(DEPRECATED)** This function was moved to [`Cielo.Recurrency.create_payment/1`](Cielo.Recurrency.html#create_payment/1)
+
+   Also, you can use main module [`Cielo.recurrent_transaction/1`](Cielo.html#recurrent_transaction/1)
+  """
   @spec recurrent(map) :: {:ok, map()} | {:error, map(), list()} | {:error, any}
   def recurrent(params) do
     make_post_transaction(RecurrentTransactionRequest, params)
@@ -413,6 +418,9 @@ defmodule Cielo.Transaction do
 
   @doc """
   Deactivate a recurrent payment transaction
+
+  **(DEPRECATED)** This function was moved to [`Cielo.Recurrency.deactivate/1`](Cielo.Recurrency.html#deactivate/1)
+  or main module [`Cielo.deactivate_recurrent/1`](Cielo.html#deactivate_recurrent/1)
 
   ## Successfull transaction
 
