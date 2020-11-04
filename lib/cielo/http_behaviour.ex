@@ -23,7 +23,7 @@ defmodule Cielo.HTTPBehaviour do
 
     Return a `response` type
     """
-    @callback unquote(method)(binary, map | list) :: response
+    @callback unquote(method)(binary, binary | map | list) :: response
 
     @doc """
     Called to #{@method} call in hackney wrapper, but with binary path, map for parameters and config list

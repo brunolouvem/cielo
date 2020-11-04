@@ -129,6 +129,21 @@ defmodule Cielo.Utils do
     Regex.match?(guid_regex, guid)
   end
 
+  @doc false
+  def format_update_response(tuple, default_message \\ :updated)
+  def format_update_response({:ok, response}, default_message) when response == "" do
+    {:ok, default_message}
+  end
+
+  def format_update_response(tuple, _default_message), do: tuple
+
+  def parse_interval(:monthly), do: 1
+  def parse_interval(:bimonthly), do: 2
+  def parse_interval(:quarterly), do: 3
+  def parse_interval(:semi_annual), do: 6
+  def parse_interval(:annual), do: 12
+
+
   defp convert_map_key(key, :atom) when is_atom(key), do: key
 
   defp convert_map_key(key, :atom) when is_binary(key) do
