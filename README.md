@@ -21,8 +21,8 @@ Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
 |Cancel a Sale   | ✅ |
 |Partial Cancel Sale   | ✅ |
 |Cancel a Recurrent Sale   | ✅ |
-|Card Tokenization   | ⏱ |
-|Token Consultation   | ⏱ |
+|Card Tokenization   | ✅ |
+|Token Consultation   | ✅ |
 |QRCode Transaction   | ⏱ |
 
 
