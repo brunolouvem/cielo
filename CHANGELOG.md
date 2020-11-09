@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.5 (2020-11-09)
+* Tokenization Functions
+
 ## v0.1.4 (2020-11-04)
 
 ### Enhancements

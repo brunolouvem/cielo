@@ -32,4 +32,7 @@ defmodule Cielo do
   defdelegate deactivate_recurrent(recurrent_payment_id), to: Cielo.Recurrency, as: :deactivate
   defdelegate reactivate_recurrent(recurrent_payment_id), to: Cielo.Recurrency, as: :reactivate
   defdelegate update_recurrent(recurrent_payment_id, params), to: Cielo.Recurrency, as: :update_payment_data
+
+  defdelegate create_token(params), to: Cielo.Token, as: :create_token
+  defdelegate get_card(token), to: Cielo.Token, as: :get_card
 end
