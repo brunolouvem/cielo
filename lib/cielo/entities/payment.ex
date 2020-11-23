@@ -59,6 +59,35 @@ defmodule Cielo.Entities.RecurrentPaymentUpdate do
   end
 end
 
+defmodule Cielo.Entities.RecurrentPayment do
+  use Cielo.Entities.Base
+  alias Cielo.Entities
+
+  embedded_schema do
+    field(:amount, :integer)
+    field(:installments, :integer)
+    field(:soft_descriptor, :string)
+    field(:currency, :string)
+    field(:type, :string)
+
+    embeds_one(:recurrent_payment, Entities.Recurrent)
+    embeds_one(:credit_card, Entities.CreditCard)
+  end
+
+  def changeset(payment, attrs) do
+    payment
+    |> cast(attrs, [
+      :amount,
+      :installments,
+      :soft_descriptor,
+      :type
+    ])
+    |> cast_embed(:recurrent_payment)
+    |> cast_embed(:credit_card)
+    |> validate_required([:amount, :installments, :credit_card, :recurrent_payment, :type])
+  end
+end
+
 defmodule Cielo.Entities.Recurrent do
   use Cielo.Entities.Base
   alias Cielo.Entities
@@ -77,9 +106,6 @@ defmodule Cielo.Entities.Recurrent do
     |> maybe_validate_interval()
   end
 
-  def maybe_validate_interval(%Ecto.Changeset{changes: %{interval: nil}} = changeset),
-    do: changeset
-
   def maybe_validate_interval(%Ecto.Changeset{changes: %{interval: _interval}} = changeset) do
     validate_inclusion(changeset, :interval, [
       "Monthly",
@@ -89,6 +115,9 @@ defmodule Cielo.Entities.Recurrent do
       "Annual"
     ])
   end
+
+  def maybe_validate_interval(%Ecto.Changeset{changes: _changes} = changeset),
+    do: changeset
 end
 
 defmodule Cielo.Entities.DebitCardPayment do
