@@ -25,13 +25,13 @@ defmodule Cielo.Recurrency do
 
   ## Examples
 
-      iex(1)> Cielo.Recurrency.update_end_date(valid_params)
+      iex(1)> Cielo.Recurrency.create_payment(valid_params)
       {:ok, success_map}
 
-      iex(2)> Cielo.Recurrency.update_end_date(invalid_params)
+      iex(2)> Cielo.Recurrency.create_payment(invalid_params)
       {:error, :bad_request, [%{code: 313, message: "Recurrent Payment not found"}]}
 
-      iex(2)> Cielo.Recurrency.update_end_date(invalid_params)
+      iex(2)> Cielo.Recurrency.create_payment(invalid_params)
       {:error, %{
         errors: [...]
       }}
