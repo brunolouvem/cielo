@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+### Fixes
+* Fix not definiton of `Entities.RecurrentPayment` module
+
 ## v0.1.5 (2020-11-09)
 * Tokenization Functions
 
