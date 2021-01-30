@@ -1,8 +1,12 @@
 # Changelog
 
-## Unreleased
+## v0.1.6 (2021-01-30)
+
+### Enhancements
+* `base_cielo_uri` as possible parameter for configure `Cielo.HTTP` module.
+
 ### Fixes
-* Fix not definiton of `Entities.RecurrentPayment` module
+* Fix not definiton of `Entities.RecurrentPayment` module.
 
 ## v0.1.5 (2020-11-09)
 * Tokenization Functions
