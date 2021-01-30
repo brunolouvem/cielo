@@ -168,20 +168,6 @@ defmodule Cielo.HTTP do
       request(unquote(method), path, payload, [])
     end
 
-    if @method != "GET" do
-      @doc """
-      Wrapp a hackey call with #{@method} verb passing path and payload to function
-
-      ## Example
-
-          iex> Cielo.HTTP.#{method}("/1/sales", %{merchant_order_id: order_key})
-          {:ok, %{
-              merchant_order_id: order_key,
-              ...
-            }}
-      """
-    end
-
     @impl Cielo.HTTPBehaviour
     def unquote(method)(path, opts) when is_list(opts) do
       request(unquote(method), path, %{}, opts)
@@ -241,7 +227,8 @@ defmodule Cielo.HTTP do
   defp build_url(path, method, opts) do
     environment = opts |> get_lazy_env(:sandbox) |> is_sandbox?()
 
-    build_endpoint(environment, method) <> "/" <> path
+    base_uri = Utils.get_env(:cielo_base_uri) || build_endpoint(environment, method)
+    base_uri <> "/" <> path
   end
 
   @impl Cielo.HTTPBehaviour
@@ -269,7 +256,7 @@ defmodule Cielo.HTTP do
   defp error_response(reason, detail), do: {:error, reason, detail}
 
   defp get_lazy_env(opts, key, default \\ nil) do
-    Keyword.get_lazy(opts, key, fn -> Utils.get_env(key, default) end)
+    Keyword.get_lazy(opts, key, fn -> Utils.get_env!(key, default) end)
   end
 
   defp build_endpoint(sandbox, method) do

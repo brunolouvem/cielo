@@ -4,21 +4,20 @@ defmodule Cielo.Utils do
   """
 
   @doc """
-  Helper function for retrieving cielo environment values, but
-  will raise an exception if values are missing.
+  Helper function for retrieving cielo environment values
   ## Example
-      iex> Cielo.get_env(:random_value)
+      iex> Cielo.Utils.get_env(:random_value)
       ** (Cielo.ConfigError) missing config for :random_value
-      iex> Cielo.get_env(:random_value, "random")
+      iex> Cielo.Utils.get_env(:random_value, "random")
       "random"
       iex> Application.put_env(:cielo, :random_value, "not-random")
-      ...> value = Cielo.get_env(:random_value)
+      ...> value = Cielo.Utils.get_env(:random_value)
       ...> Application.delete_env(:cielo, :random_value)
       ...> value
       "not-random"
       iex> System.put_env("RANDOM", "not-random")
       ...> Application.put_env(:cielo, :system_value, {:system, "RANDOM"})
-      ...> value = Cielo.get_env(:system_value)
+      ...> value = Cielo.Utils.get_env(:system_value)
       ...> System.delete_env("RANDOM")
       ...> value
       "not-random"
@@ -38,11 +37,45 @@ defmodule Cielo.Utils do
   end
 
   @doc """
+  Helper function for retrieving cielo environment values, but
+  will raise an exception if values are missing.
+  ## Example
+      iex> Cielo.Utils.get_env!(:random_value)
+      ** (Cielo.ConfigError) missing config for :random_value
+      iex> Cielo.Utils.get_env!(:random_value, "random")
+      "random"
+      iex> Application.put_env(:cielo, :random_value, "not-random")
+      ...> value = Cielo.Utils.get_env!(:random_value)
+      ...> Application.delete_env(:cielo, :random_value)
+      ...> value
+      "not-random"
+      iex> System.put_env("RANDOM", "not-random")
+      ...> Application.put_env(:cielo, :system_value, {:system, "RANDOM"})
+      ...> value = Cielo.Utils.get_env!(:system_value)
+      ...> System.delete_env("RANDOM")
+      ...> value
+      "not-random"
+  """
+  @spec get_env!(atom, any) :: any
+  def get_env!(key, default \\ nil) do
+    case Application.fetch_env(:cielo, key) do
+      {:ok, {:system, var}} when is_binary(var) ->
+        handle_exception!(var, System.get_env(var), default)
+
+      {:ok, value} ->
+        value
+
+      :error ->
+        handle_exception!(key, nil, default)
+    end
+  end
+
+  @doc """
   Helper function for setting `cielo` application environment
   variables.
   ## Example
       iex> Cielo.put_env(:thingy, "thing")
-      ...> Cielo.get_env(:thingy)
+      ...> Cielo.Utils.get_env(:thingy)
       "thing"
   """
   @spec put_env(atom, any) :: :ok
@@ -50,9 +83,12 @@ defmodule Cielo.Utils do
     Application.put_env(:cielo, key, value)
   end
 
-  defp handle_exception(key, nil, nil), do: raise(Cielo.ConfigurationError, key)
   defp handle_exception(_, nil, default), do: default
   defp handle_exception(_, value, _), do: value
+
+  defp handle_exception!(key, nil, nil), do: raise(Cielo.ConfigurationError, key)
+  defp handle_exception!(_, nil, default), do: default
+  defp handle_exception!(_, value, _), do: value
 
   def changeset_errors(%Ecto.Changeset{valid?: false, changes: changes, errors: []}) do
     Enum.reduce(changes, %{errors: []}, fn {key, change}, acc ->
