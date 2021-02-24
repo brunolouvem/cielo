@@ -20,7 +20,7 @@ defmodule Cielo.Entities.CreditCard do
       :holder,
       :security_code
     ])
-    |> validate_required([:brand, :card_number, :expiration_date, :holder, :security_code])
+    |> validate_required([:brand, :security_code])
   end
 end
 
