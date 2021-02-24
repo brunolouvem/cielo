@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.7 (2021-02-24)
+
+### Enhancements
+* Create payment from token.
+
 ## v0.1.6 (2021-01-30)
 
 ### Enhancements
