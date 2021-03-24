@@ -2,7 +2,7 @@
 
 **A Cielo API Client for Elixir**
 
-Online documentation [http://hex.pm/cielo](http://hex.pm/cielo).
+Online documentation [http://hex.pm/cielo](https://hexdocs.pm/cielo/readme.html#installation).
 
 ## Roadmap
 
