@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.8 (2021-03-24)
+
+### Fixes
+* Fix wrong URI to deactivate recurrent payment
+
 ## v0.1.7 (2021-02-24)
 
 ### Enhancements

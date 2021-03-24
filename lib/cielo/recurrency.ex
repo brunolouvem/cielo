@@ -15,8 +15,8 @@ defmodule Cielo.Recurrency do
   @update_amount_endpoint @base_recurrent_url <> "/Amount"
   @update_next_charge_date_endpoint @base_recurrent_url <> "/NextPaymentDate"
   @update_payment_endpoint @base_recurrent_url <> "/Payment"
-  @deactivate_endpoint @base_recurrent_url <> "/Reactivate"
-  @reactivate_endpoint @base_recurrent_url <> "/Deactivate"
+  @deactivate_endpoint @base_recurrent_url <> "/Deactivate"
+  @reactivate_endpoint @base_recurrent_url <> "/Reactivate"
 
   @valid_intervals ~w(monthly bimonthly quarterly semi_annual annual)a
 
